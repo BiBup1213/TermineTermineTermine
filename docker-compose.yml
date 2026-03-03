@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: ./backend
+    container_name: siblings-backend
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      FRONTEND_ORIGIN: http://localhost:5173
+      TOKEN_PEPPER: change-me-in-prod
+    volumes:
+      - backend_data:/data
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: siblings-frontend
+    environment:
+      VITE_API_BASE: http://localhost:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
