@@ -9,12 +9,14 @@ import type {
 const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8000'
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
+  const headers = new Headers(init?.headers ?? {})
+  if (!headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json')
+  }
+
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(init?.headers ?? {})
-    },
-    ...init
+    ...init,
+    headers
   })
 
   if (!res.ok) {

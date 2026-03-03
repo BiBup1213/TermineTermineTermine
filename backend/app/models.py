@@ -1,7 +1,6 @@
-from __future__ import annotations
-
 from datetime import date, datetime, timezone
 from enum import Enum
+from typing import List, Optional
 import uuid
 
 from sqlalchemy import Column, Date, UniqueConstraint
@@ -25,8 +24,8 @@ class Poll(SQLModel, table=True):
     admin_token_hash: str
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-    days: list[PollDay] = Relationship(back_populates="poll")
-    votes: list[Vote] = Relationship(back_populates="poll")
+    days: List["PollDay"] = Relationship(back_populates="poll")
+    votes: List["Vote"] = Relationship(back_populates="poll")
 
 
 class PollDay(SQLModel, table=True):
@@ -36,7 +35,7 @@ class PollDay(SQLModel, table=True):
     poll_id: uuid.UUID = Field(foreign_key="poll.id", index=True)
     day: date = Field(sa_column=Column(Date, nullable=False))
 
-    poll: Poll | None = Relationship(back_populates="days")
+    poll: Optional["Poll"] = Relationship(back_populates="days")
 
 
 class Vote(SQLModel, table=True):
@@ -54,8 +53,8 @@ class Vote(SQLModel, table=True):
     participant_token_hash: str
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-    poll: Poll | None = Relationship(back_populates="votes")
-    choices: list[VoteChoice] = Relationship(back_populates="vote")
+    poll: Optional["Poll"] = Relationship(back_populates="votes")
+    choices: List["VoteChoice"] = Relationship(back_populates="vote")
 
 
 class VoteChoice(SQLModel, table=True):
@@ -66,4 +65,4 @@ class VoteChoice(SQLModel, table=True):
     day: date = Field(sa_column=Column(Date, nullable=False))
     choice: VoteChoiceEnum = Field(default=VoteChoiceEnum.no)
 
-    vote: Vote | None = Relationship(back_populates="choices")
+    vote: Optional["Vote"] = Relationship(back_populates="choices")
