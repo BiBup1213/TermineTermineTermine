@@ -29,6 +29,7 @@
 import { computed, ref, watch } from 'vue'
 import DayCell from './DayCell.vue'
 import type { VoteChoice } from '../api/types'
+import { formatDateDE } from '../utils/dateFormat'
 
 const props = defineProps<{
   rangeFrom: string
@@ -133,7 +134,7 @@ const cells = computed(() => {
       dayNumber: day,
       state,
       disabled,
-      ariaLabel: `${iso} ${state}`
+      ariaLabel: `${formatDateDE(iso)} ${state}`
     })
   }
 

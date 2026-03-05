@@ -1,16 +1,15 @@
 <template>
   <div class="card inline-card">
-    <div>
-      <div class="label">Share link</div>
-      <div class="mono">{{ link }}</div>
-    </div>
-    <button class="btn" type="button" @click="copy">Kopieren</button>
+    <BaseInput id="share-link" :model-value="link" label="Share link" readonly />
+    <BaseButton @click="copy">Kopieren</BaseButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { showToast } from '../composables/toast'
+import BaseButton from './ui/BaseButton.vue'
+import BaseInput from './ui/BaseInput.vue'
 
 const props = defineProps<{ pollId: string }>()
 

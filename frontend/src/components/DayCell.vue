@@ -31,7 +31,7 @@ const symbolMap = {
   selected: '✓',
   no: '○',
   maybe: '△',
-  yes: '●'
+  yes: '✓'
 } as const
 
 const symbol = computed(() => symbolMap[props.state])
